@@ -1,59 +1,91 @@
-# Angular19
+# Angular 19 Starter  
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+Projet Frontend Angular 19 moderne avec Tailwind CSS 4.1, DaisyUI 5.x, ngx-translate, Chart.js et support complet UI/UX standalone avec SRP.
 
-## Development server
+## 🔧 Stack Technique
 
-To start a local development server, run:
+- Angular 19 Standalone API
+- Tailwind CSS v4.1
+- DaisyUI v5.x (thème personnalisable via `data-theme`)
+- ngx-translate (multi-fichier dynamique)
+- Chart.js & ng2-charts
+- Signal / Computed / SRP
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📦 Installation
 
 ```bash
-ng generate component component-name
+git clone https://github.com/coundia/angular-i18n-daisyui-starter
+cd angular-i18n-daisyui-starter
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🚀 Démarrage
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+Accessible via `http://localhost:4200`
 
-To build the project run:
+## 🛠️ Commandes Utiles
+
+| Commande        | Description                        |
+|-----------------|------------------------------------|
+| `npm start`     | Lancer l'application               |
+| `npm run build` | Compiler pour la prod              |
+| `npm run test`  | Lancer les tests unitaires         |
+| `npm run watch` | Rebuild à chaque modification      |
+
+## 🌍 Traduction
+
+Support multi-langue avec `@ngx-translate/core` + `MultiTranslateHttpLoader`.
+
+### Ajout de fichiers de traduction :
+```ts
+export function httpLoaderFactory(http: HttpClient) {
+  return new MultiTranslateHttpLoader(http, [
+    'general',
+    'nav',
+    'notification',
+    'security',
+    'errors',
+    // ajouter ici vos fichiers
+  ]);
+}
+```
+
+## 🎨 Thème & Design
+
+Utilise `DaisyUI` avec thème dynamique :
+
+```html
+<html data-theme="light">
+<!-- ou -->
+<html data-theme="dark">
+<!-- ou votre thème -->
+<html data-theme="tenant-theme">
+```
+
+## 📊 Graphiques
+
+Intégration via `ng2-charts` et `chart.js` :
+
+```ts
+import { NgChartsModule } from 'ng2-charts';
+```
+
+## 🧪 Tests
+
+Basé sur Karma + Jasmine :
 
 ```bash
-ng build
+npm run test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🧩 À venir
+ 
+- Animations et accessibilité optimisées
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Développé avec ❤️  
