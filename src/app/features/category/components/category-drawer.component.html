@@ -1,0 +1,51 @@
+<div class="drawer drawer-end z-50" *ngIf="visible()">
+  <input id="drawer-detail" type="checkbox" class="drawer-toggle" checked />
+  <div class="drawer-content"></div>
+
+  <div class="drawer-side">
+    <label for="drawer-detail" class="drawer-overlay" (click)="close()"></label>
+    <div class="bg-base-100 w-96 min-h-full p-6 space-y-6 shadow-xl rounded-l-2xl">
+      <div class="flex justify-between items-center">
+        <h3 class="text-2xl font-bold text-primary">Détails catégorie</h3>
+        <button class="btn btn-sm btn-circle btn-ghost" (click)="close()">✕</button>
+      </div>
+
+      <ul class="text-sm grid grid-cols-2 gap-2">
+        <span class="font-semibold">Nom :</span><span>{{ category.name }}</span>
+        <span class="font-semibold">Type :</span>
+        <span>
+          <span class="badge badge-sm"
+                [ngClass]="category.typeCategoryRaw === 'IN' ? 'badge-success' : 'badge-error'">
+            {{ category.typeCategoryRaw === 'IN' ? 'Entrée' : 'Sortie' }}
+          </span>
+        </span>
+        <span class="font-semibold">Actif :</span><span>{{ category.isActive ? 'Oui' : 'Non' }}</span>
+        <span class="font-semibold">Référence :</span><span>{{ category.reference || '—' }}</span>
+        <span class="font-semibold">Créé par :</span><span>{{ category.createdBy }}</span>
+        <span class="font-semibold">Mis à jour :</span><span>{{ category.updatedAt || '—' }}</span>
+      </ul>
+
+      <div>
+        <span class="font-semibold block mb-1">Détails :</span>
+        <p class="bg-base-200 p-3 rounded text-sm">{{ category.details || 'Aucun' }}</p>
+      </div>
+      <div class="divider"></div>
+
+      <div class="flex justify-between gap-2 ">
+        <a
+          [routerLink]="['/category', category.id, 'edit']"
+          class="btn btn-sm btn-outline btn-info  "
+        >
+          ✏️ Modifier
+        </a>
+
+        <button
+          class="btn btn-sm btn-outline btn-error "
+          (click)="confirmDelete(category.id!)"
+        >
+          🗑️ Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

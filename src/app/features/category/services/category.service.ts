@@ -51,4 +51,20 @@ export class CategoryService {
       headers: this.headers(),
     });
   }
+
+  search(field: string, value: string) {
+    this.http.get<Category[]>(
+      `${this.base}/queries/category/${field}?${field}=${encodeURIComponent(value)}`,
+      { headers: this.headers() }
+    ).subscribe(res => this.categories.set(res));
+  }
+
+  getById(id: string) {
+    return this.http.get<Category>(
+      `${this.base}/queries/category/id?id=${encodeURIComponent(id)}`,
+      { headers: this.headers() }
+    );
+  }
+
+
 }

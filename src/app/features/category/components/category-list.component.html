@@ -1,10 +1,43 @@
-<div class="p-6 space-y-4 bg-base-100 rounded-xl shadow-inner">
-  <div class="flex justify-between items-center flex-wrap gap-3">
-    <h2 class="text-xl font-bold text-primary">Catégories</h2>
+<div class="p-6 space-y-6 bg-base-100 rounded-xl shadow-inner">
+
+  <div class="flex flex-col md:flex-row justify-between gap-4   md:items-center">
+
+    <h2 class="text-2xl font-bold text-primary">Catégories</h2>
+
     <div class="flex gap-2">
-      <a routerLink="/category/new" class="btn btn-sm btn-primary">Nouvelle</a>
+      <select [(ngModel)]="searchField" class="select select-md select-bordered">
+        <option value="name">Nom</option>
+        <option value="id">ID</option>
+        <option value="typeCategoryRaw">Type</option>
+        <option value="createdBy">Créé par</option>
+        <option value="isActive">Actif</option>
+        <option value="reference">Référence</option>
+        <option value="details">Détails</option>
+        <option value="tenant">Tenant</option>
+        <option value="updatedAt">Mis à jour</option>
+      </select>
+
+      <input type="text"
+             [(ngModel)]="searchTerm"
+             (keyup.enter)="search()"
+             placeholder="Recherche..."
+             class="input input-md input-bordered w-full max-w-xs" />
+      <button class="btn btn-sm btn-ghost text-error" (click)="clearSearch()">✕</button>
+
+      <button class="btn btn-sm btn-outline" (click)="search()">Rechercher</button>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <a routerLink="/category/new" class="btn btn-sm btn-primary gap-1">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Nouvelle
+      </a>
       <button class="btn btn-sm btn-outline" (click)="refresh()">Rafraîchir</button>
     </div>
+
   </div>
 
   @if (list().length > 0) {
@@ -24,20 +57,25 @@
           @for (category of list(); let i = $index; track category.id) {
             <tr class="hover">
               <th>{{ i + 1 }}</th>
-              <td>{{ category.name }}</td>
+              <td class="font-semibold">{{ category.name }}</td>
               <td>
                 <span class="badge badge-sm"
                       [ngClass]="category.typeCategoryRaw === 'IN' ? 'badge-success' : 'badge-error'">
                   {{ category.typeCategoryRaw === 'IN' ? 'Entrée' : 'Sortie' }}
                 </span>
               </td>
-              <td>{{ category.details || '-' }}</td>
+              <td class="text-left">{{ category.details || '-' }}</td>
               <td>
                 <input type="checkbox" class="checkbox checkbox-xs" [checked]="category.isActive" disabled />
               </td>
               <td>
                 <div class="flex justify-center gap-1">
-                  <a [routerLink]="['/category', category.id, 'edit']" class="btn btn-xs btn-outline btn-info">
+                  <button class="btn btn-xs btn-outline btn-primary" (click)="showDetails(category.id)">
+                    Voir
+                  </button>
+
+                  <a [routerLink]="['/category', category.id, 'edit']"
+                     class="btn btn-xs btn-outline btn-info">
                     Modifier
                   </a>
                   <button class="btn btn-xs btn-outline btn-error" (click)="delete(category)">
@@ -50,19 +88,11 @@
         </tbody>
       </table>
 
-      <div class="flex justify-center items-center gap-2 p-4">
-        <button class="btn btn-sm" (click)="prev()" [disabled]="page() === 0">
-          Précédent
-        </button>
-        <span class="text-sm text-base-content/60">
-    Page {{ page() + 1 }} / {{ totalPages() }}
-  </span>
-        <button class="btn btn-sm" (click)="next()" [disabled]="page() >= totalPages() - 1">
-          Suivant
-        </button>
+      <div class="flex justify-center items-center gap-3 p-4">
+        <button class="btn btn-sm" (click)="prev()" [disabled]="page() === 0">Précédent</button>
+        <span class="text-sm text-base-content/60">Page {{ page() + 1 }} / {{ totalPages() }}</span>
+        <button class="btn btn-sm" (click)="next()" [disabled]="page() >= totalPages() - 1">Suivant</button>
       </div>
-
-
     </div>
   } @else {
     <div class="text-center text-base-content/60 italic bg-base-200 py-8 rounded-xl shadow">
@@ -70,3 +100,8 @@
     </div>
   }
 </div>
+
+<app-category-drawer
+  *ngIf="selectedCategory()"
+  [category]="selectedCategory()!"
+/>

@@ -1,0 +1,8 @@
+<div class="fixed top-4 right-4 z-[1000]" *ngIf="alert.isVisible()">
+  <div class="alert" [ngClass]="cssClass" role="alert">
+    <svg class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+      <path [attr.d]="icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+    </svg>
+    <span>{{ alert.message() }}</span>
+  </div>
+</div>

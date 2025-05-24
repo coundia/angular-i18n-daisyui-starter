@@ -1,0 +1,5 @@
+<div class="toast toast-top toast-end z-[100]" *ngIf="toast.isVisible()">
+  <div class="alert" [ngClass]="cssClass">
+    <span>{{ toast.message() }}</span>
+  </div>
+</div>
