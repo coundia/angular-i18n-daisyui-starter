@@ -1,0 +1,10 @@
+{
+  "register": {
+    "title": "Inscription",
+    "username_placeholder": "Nom d'utilisateur",
+    "password_placeholder": "Mot de passe",
+    "loading": "Inscription en cours...",
+    "submit": "S'inscrire",
+    "already_have_account": "Vous avez déjà un compte ?"
+  }
+}

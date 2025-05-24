@@ -1,0 +1,50 @@
+<div class="relative group">
+  <button
+    class="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-colors duration-200 ease-in-out hover:bg-base-200 capitalize"
+  >
+    <svg class="w-5 h-5 text-base-content" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+    <span>{{ 'profile.title' | translate }}</span>
+    <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <div
+    class="absolute right-0 mt-2 w-56 bg-base-100 rounded-xl shadow-lg border border-base-300 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+  >
+    <a
+      routerLink="/"
+      routerLinkActive="font-semibold text-primary"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center gap-2 px-4 py-2 hover:bg-base-200 transition-colors capitalize"
+    >
+      <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 2v8m0 0H5a2 2 0 01-2-2v-5m16 7h-6a2 2 0 01-2-2v-5" />
+      </svg>
+      {{ 'home' | translate }}
+    </a>
+
+    <a
+      routerLink="/me"
+      routerLinkActive="font-semibold text-primary"
+      class="flex items-center gap-2 px-4 py-2 hover:bg-base-200 transition-colors capitalize"
+    >
+      <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      {{ 'profile.title' | translate }}
+    </a>
+
+    <button
+      (click)="logout()"
+      class="w-full flex items-center gap-2 text-left px-4 py-2 text-error hover:bg-error/10 transition-colors capitalize"
+    >
+      <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+      {{ 'logout' | translate }}
+    </button>
+  </div>
+</div>

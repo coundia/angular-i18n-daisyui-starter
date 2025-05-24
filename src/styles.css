@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+
+@plugin "daisyui" {
+  themes: light, dark --prefersdark, tenant-theme --default;
+}
+@plugin "daisyui/theme" {
+  name: "tenant-theme";
+  default: true;
+  color-scheme: light;
+
+  --color-primary: #5AB4A6;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #f4e7d3;
+  --color-secondary-content: #3e3933;
+
+  --color-accent: #e2b5ac;
+  --color-accent-content: #3e3933;
+
+  --color-neutral: #3e3933;
+  --color-neutral-content: #ffffff;
+
+  --color-base-100: #e9eee6;
+  --color-base-200: #e0e5dd;
+  --color-base-300: #d6dbd4;
+  --color-base-content: #3e3933;
+
+  --color-info: #0ea5e9;
+  --color-success: #16a34a;
+  --color-warning: #facc15;
+  --color-error: #dc2626;
+
+  --rounded-box: 1rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+
+}
+
+body {
+  @apply h-full;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-primary: #5AB4A6;
+  --color-secondary: #3e3933;
+}
+
+@utility btn {
+  @apply rounded-full;
+}
+
+@utility form-input {
+  @apply w-full border p-4 rounded-xl text-base placeholder:text-base-content/50 focus:outline-none focus:ring-2 focus:ring-primary transition duration-200;
+}
+
+

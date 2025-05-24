@@ -1,0 +1,7 @@
+{
+  "not_found": "Non trouvé",
+  "forbidden": "Accès refusé",
+  "unauthorized": "Non autorisé",
+  "server_error": "Erreur du serveur",
+  "required_field": "Champ obligatoire"
+}

@@ -1,0 +1,50 @@
+<div class="navbar sticky top-0 z-50 bg-base-100 dark:bg-base-200 shadow-sm px-4">
+
+  <app-side-panel />
+
+  <div class="flex-1 pl-10">
+    <a routerLink="/" class="btn btn-ghost text-xl normal-case">
+      <img src="assets/logo.svg" alt="Logo" class="w-6 h-6 mr-2" />
+      TopAll
+    </a>
+  </div>
+
+  <div class="flex gap-2 items-center">
+    <div class="hidden md:flex gap-4 items-center">
+      @if (isLogged()) {
+        <app-navbar-logged-in />
+      } @else {
+        <app-navbar-guest />
+      }
+    </div>
+    <app-theme-toggle />
+
+    <button
+      class="md:hidden btn btn-square btn-ghost"
+      (click)="toggleMenu()"
+      aria-label="Menu"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-base-content" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+@if (isOpen()) {
+  <div class="fixed inset-0 z-40 bg-black bg-opacity-40" (click)="closeMenu()"></div>
+
+  <div class="absolute top-[64px] left-0 right-0 z-50 p-4 space-y-2 bg-base-100 dark:bg-base-200 shadow-md md:hidden animate-fade-in-down">
+    <a routerLink="/" class="btn btn-block btn-ghost justify-start text-base-content" (click)="closeMenu()">
+      {{ 'home' | translate }}
+    </a>
+    <a routerLink="/security/login" class="btn btn-block btn-ghost justify-start text-base-content" (click)="closeMenu()">
+      {{ 'login.title' | translate }}
+    </a>
+    <a routerLink="/security/register" class="btn btn-block btn-ghost justify-start text-base-content" (click)="closeMenu()">
+      {{ 'register.title' | translate }}
+    </a>
+  </div>
+}

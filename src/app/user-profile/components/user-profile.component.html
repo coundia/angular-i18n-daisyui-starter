@@ -1,0 +1,40 @@
+<div class="max-w-xl mx-auto mt-12 p-6 sm:p-8 bg-base-100 dark:bg-base-200 rounded-3xl shadow-xl space-y-8 transition-all">
+  @if (user$ | async; as user) {
+    <div class="flex items-center gap-5">
+      <app-user-avatar [username]="user.username" />
+      <div>
+        <h2 class="text-2xl font-extrabold text-primary tracking-tight">{{ user.username }}</h2>
+        <p class="text-sm text-base-content/70">{{ user.email || 'Email non défini' }}</p>
+      </div>
+    </div>
+
+    <div class="grid gap-4">
+      <div class="flex items-center justify-between rounded-2xl bg-base-200 px-5 py-3 shadow-sm dark:bg-base-100">
+        <span class="text-sm font-semibold text-base-content/80">Rôle</span>
+        <span class="badge   badge-lg">{{ user.roles[0] || 'Utilisateur' }}</span>
+      </div>
+
+      <app-user-status label="Admin" [status]="user.isAdmin" />
+      <app-user-status label="Premium" [status]="user.isPremium" badgeTrue="badge-warning" badgeFalse="badge-neutral" />
+      <app-user-status label="Actif" [status]="user.isEnabled" />
+
+      <div class="rounded-2xl bg-base-200 dark:bg-base-100 px-5 py-4 shadow-sm">
+        <span class="block font-semibold text-base-content/80 mb-2">Autorisations</span>
+        <div class="flex flex-wrap gap-2">
+          @for (a of user.authorities; track a.authority) {
+            <span class="badge badge-outline badge-primary text-sm px-3 py-1 rounded-full">
+              {{ a.authority || 'Aucune autorité' }}
+            </span>
+          }
+
+          @if (user.authorities.length === 0) {
+            <span class="badge badge-outline badge-neutral text-sm px-3 py-1 rounded-full">Aucune </span>
+          }
+
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="text-center text-sm text-error font-medium">Votre profil n'est pas disponible.</div>
+  }
+</div>

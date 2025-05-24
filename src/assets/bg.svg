@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="1024"
+   height="1024"
+   viewBox="0 0 1024 1024"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <filter
+       style="color-interpolation-filters:sRGB"
+       id="filter102"
+       x="-2.3461226e-06"
+       y="0"
+       width="1.0000047"
+       height="1">
+      <feGaussianBlur
+         stdDeviation="0.001 0"
+         id="feGaussianBlur102" />
+    </filter>
+  </defs>
+  <g
+     id="g1">
+    <g
+       id="g102"
+       transform="translate(-4.5454545,3.030303)">
+      <path
+         id="path102"
+         style="fill:#5ab4a6;stroke-width:1.14618;filter:url(#filter102)"
+         transform="matrix(1,0.01534903,0,1,0,-15.744383)"
+         d="m 1028.7878,512.77174 c 1.5681,134.38333 6.3359,230.69885 -0.7506,379.28789 -5.4711,114.71827 29.5748,131.23607 -6.8252,128.98977 C 936.30936,1015.8099 -87.974009,1074.426 23.477791,1015.331 160.30639,942.78051 887.62854,876.27954 781.81814,795.0063 590.90904,648.36852 855.43668,446.03248 882.56871,327.81991 c 30.69659,-133.7431 70.29065,115.7298 61.37062,223.20336 -46.85148,564.49333 -28.05977,-137.33145 32.58275,-435.52815 76.26112,-374.99774 50.75062,267.42879 52.26572,397.27662 z" />
+    </g>
+  </g>
+</svg>

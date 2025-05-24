@@ -1,0 +1,44 @@
+<main class="min-h-screen text-base-content flex flex-col">
+  <section class="flex-1 flex flex-col items-center justify-center text-center px-6">
+    <div class="max-w-3xl animate-fade-in">
+        <img src="/assets/logo.svg" alt="Topall Money" class="w-20 h-20 mx-auto mb-6" />
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">Topall Money</h1>
+        <p class="text-xl font-semibold text-primary mt-2 mb-6">Topal sa xalis !</p>
+        <p class="text-lg text-base-content/70 mb-6">
+          Gérez vos finances personnelles et professionnelles de manière simple, intuitive et 100 % hors ligne.
+        </p>
+
+      @if (auth.isLogged) {
+        <h1 class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+           {{  'welcome' | translate   }} : {{username}}
+        </h1>
+      }@else{
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+          <a routerLink="/security/register" class="btn btn-primary text-white text-lg px-8">Créer un compte</a>
+          <a routerLink="/security/login" class="btn btn-outline btn-primary text-lg px-8">Se connecter</a>
+        </div>
+      }
+
+        <div class="text-sm text-base-content/60 max-w-2xl mx-auto">
+          <p class="mb-2">
+            Notre mission : accompagner les entrepreneurs, indépendants et particuliers à mieux comprendre leurs dépenses,
+            maîtriser leur budget, et faire grandir leur activité grâce à des outils accessibles à tous.
+          </p>
+          <p class="mb-6">
+            Chaque contribution permet d'améliorer l'app, garantir un service gratuit et développer de nouvelles
+            fonctionnalités (analyse, IA, synchronisation...).
+          </p>
+          <a href="https://buymeacoffee.com/topall" target="_blank" class="btn btn-accent font-semibold">
+            ☕ Soutenir le projet
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="text-center text-sm py-6 text-base-content/60">
+      &copy; 2025 Topall Money 🇸🇳 – Tous droits réservés.
+    </footer>
+  </main>
+

@@ -1,0 +1,7 @@
+{
+  "password": "Mot de passe",
+  "forgot_password": "Mot de passe oublié ?",
+  "change_password": "Changer le mot de passe",
+  "login_success": "Connexion réussie",
+  "login_failed": "Échec de la connexion"
+}

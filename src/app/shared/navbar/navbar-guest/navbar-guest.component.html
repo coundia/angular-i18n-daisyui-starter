@@ -1,0 +1,24 @@
+<a
+  routerLink="/"
+  routerLinkActive="font-bold underline underline-offset-8 text-[var(--color-primary)]"
+  [routerLinkActiveOptions]="{ exact: true }"
+  class="transition-colors duration-300 ease-in-out py-1 px-3 rounded-lg hover:text-[var(--color-primary)]"
+>
+  {{ 'home' | translate }}
+</a>
+
+<a
+  routerLink="/security/login"
+  routerLinkActive="font-bold underline underline-offset-8 text-[var(--color-primary)]"
+  class="transition-colors duration-300 ease-in-out py-1 px-3 rounded-lg hover:text-[var(--color-primary)]"
+>
+  {{ 'login.title' | translate }}
+</a>
+
+<a
+  routerLink="/security/register"
+  routerLinkActive="font-bold underline underline-offset-8 text-[var(--color-primary)]"
+  class="transition-colors duration-300 ease-in-out py-1 px-3 rounded-lg hover:text-[var(--color-primary)]"
+>
+  {{ 'register.title' | translate }}
+</a>

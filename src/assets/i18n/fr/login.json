@@ -1,0 +1,11 @@
+{
+  "login": {
+    "title": "Connexion",
+    "username_placeholder": "Nom d'utilisateur",
+    "password_placeholder": "Mot de passe",
+    "loading": "Connexion en cours...",
+    "submit": "Se connecter",
+    "create_account": "Créer un compte",
+    "forgot_password": "Mot de passe oublié ?"
+  }
+}
