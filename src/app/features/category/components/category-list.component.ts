@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import {CategoryService} from '../services/category.service';
 import {Category} from '../models/category.model';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [NgFor, NgIf, AsyncPipe],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './category-list.component.html'
 })
 export class CategoryListComponent {

@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
-import {authGuard} from '../../shared/security/guard/auth.guard';
+import { authGuard } from '../../shared/security/guard/auth.guard';
 
 export const categoryRoutes: Routes = [
   {
-    path: '',
+    path: 'category',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./components/category-list.component').then(m => m.CategoryListComponent),
   },
   {
-    path: 'new',
+    path: 'category/new',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./components/category-form.component').then(m => m.CategoryFormComponent),
   },
   {
-    path: ':id/edit',
+    path: 'category/:id/edit',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./components/category-form.component').then(m => m.CategoryFormComponent),
-  }
+  },
 ];

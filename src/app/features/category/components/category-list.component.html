@@ -1,5 +1,14 @@
 <div class="p-4">
-  <h2 class="text-xl font-bold mb-4">Categories</h2>
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">Catégories</h2>
+    <a
+      routerLink="/category/new"
+      class="btn btn-sm btn-primary"
+    >
+      Nouvelle
+    </a>
+  </div>
+
   @if (list().length > 0) {
     <ul class="space-y-3">
       @for (category of list(); track category.id) {
