@@ -73,7 +73,7 @@ export class CategoryFormComponent {
     request.subscribe(() => {
       this.router.navigate(['/category']).then(() => {
         setTimeout(() => {
-          this.service.fetchAll();
+          this.service.fetch(0,10)
         }, 2000);
       });
     });

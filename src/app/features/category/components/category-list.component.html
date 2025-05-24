@@ -1,5 +1,5 @@
-<div class="p-6 space-y-4">
-  <div class="flex justify-between items-center">
+<div class="p-6 space-y-4 bg-base-100 rounded-xl shadow-inner">
+  <div class="flex justify-between items-center flex-wrap gap-3">
     <h2 class="text-xl font-bold text-primary">Catégories</h2>
     <div class="flex gap-2">
       <a routerLink="/category/new" class="btn btn-sm btn-primary">Nouvelle</a>
@@ -8,9 +8,9 @@
   </div>
 
   @if (list().length > 0) {
-    <div class="overflow-x-auto shadow border border-base-300 rounded-xl">
-      <table class="table table-xs w-full">
-        <thead>
+    <div class="overflow-x-auto rounded-xl border border-base-300 shadow bg-base-200">
+      <table class="table table-xs w-full text-center">
+        <thead class="bg-base-300 text-base-content/80">
         <tr>
           <th>#</th>
           <th>Nom</th>
@@ -22,7 +22,7 @@
         </thead>
         <tbody>
           @for (category of list(); let i = $index; track category.id) {
-            <tr>
+            <tr class="hover">
               <th>{{ i + 1 }}</th>
               <td>{{ category.name }}</td>
               <td>
@@ -36,7 +36,7 @@
                 <input type="checkbox" class="checkbox checkbox-xs" [checked]="category.isActive" disabled />
               </td>
               <td>
-                <div class="flex gap-1">
+                <div class="flex justify-center gap-1">
                   <a [routerLink]="['/category', category.id, 'edit']" class="btn btn-xs btn-outline btn-info">
                     Modifier
                   </a>
@@ -49,8 +49,24 @@
           }
         </tbody>
       </table>
+
+      <div class="flex justify-center items-center gap-2 p-4">
+        <button class="btn btn-sm" (click)="prev()" [disabled]="page() === 0">
+          Précédent
+        </button>
+        <span class="text-sm text-base-content/60">
+    Page {{ page() + 1 }} / {{ totalPages() }}
+  </span>
+        <button class="btn btn-sm" (click)="next()" [disabled]="page() >= totalPages() - 1">
+          Suivant
+        </button>
+      </div>
+
+
     </div>
   } @else {
-    <div class="text-center text-base-content/60 italic">Aucune catégorie disponible</div>
+    <div class="text-center text-base-content/60 italic bg-base-200 py-8 rounded-xl shadow">
+      Aucune catégorie disponible
+    </div>
   }
 </div>
