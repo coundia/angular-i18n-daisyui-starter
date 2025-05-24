@@ -1,0 +1,20 @@
+<div class="p-4">
+  <h2 class="text-xl font-bold mb-4">Categories</h2>
+  @if (list().length > 0) {
+    <ul class="space-y-3">
+      @for (category of list(); track category.id) {
+        <li class="p-4 rounded bg-base-200 shadow-sm">
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-semibold">{{ category.name }}</div>
+              <div class="text-sm text-neutral-content">{{ category.typeCategoryRaw }} - {{ category.details }}</div>
+            </div>
+            <button class="btn btn-sm btn-error" (click)="delete(category)">Supprimer</button>
+          </div>
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="text-neutral-content">Aucune catégorie disponible</p>
+  }
+</div>

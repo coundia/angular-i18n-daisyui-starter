@@ -6,9 +6,12 @@ import {RegisterComponent} from './shared/security/register/register.component';
 import {ForgotPasswordComponent} from './shared/security/forgot-password/forgot-password.component';
 import {ResetPasswordComponent} from './shared/security/reset-password/reset-password.component';
 import {userProfileRoutes} from './user-profile/user.routes';
+import {categoryRoutes} from './features/category/category.routes';
 
 export const routes = [
-    ...userProfileRoutes,
+
+  ...categoryRoutes,
+  ...userProfileRoutes,
 
   {path: '', component: HomeComponent},
   {path: 'security/login', component: LoginComponent},
@@ -20,8 +23,8 @@ export const routes = [
     loadComponent: () => import('./shared/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
 
-  { path: 'security/forgot-password', component: ForgotPasswordComponent },
-  { path: 'security/reset-password', component: ResetPasswordComponent },
+  {path: 'security/forgot-password', component: ForgotPasswordComponent},
+  {path: 'security/reset-password', component: ResetPasswordComponent},
 
   {path: '**', redirectTo: ''}
 ];

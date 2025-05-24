@@ -1,0 +1,30 @@
+<div class="max-w-xl mx-auto p-6 bg-base-100 rounded-xl shadow">
+  <h2 class="text-2xl font-bold mb-6">
+    @if (isEdit()) { Modifier } @else { Nouvelle } catégorie
+  </h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="space-y-5">
+    <input type="text" formControlName="name" placeholder="Nom"
+           class="input input-bordered w-full" />
+
+    <select formControlName="typeCategoryRaw" class="select select-bordered w-full">
+      <option value="IN">Entrée</option>
+      <option value="OUT">Sortie</option>
+    </select>
+
+    <textarea formControlName="details" rows="3" class="textarea textarea-bordered w-full"
+              placeholder="Détails"></textarea>
+
+    <label class="flex items-center gap-2">
+      <input type="checkbox" formControlName="isActive" class="checkbox" />
+      Actif
+    </label>
+
+    <input type="text" formControlName="reference" placeholder="Référence"
+           class="input input-bordered w-full" />
+
+    <button type="submit" class="btn btn-primary w-full" [disabled]="form.invalid">
+      @if (isEdit()) { Mettre à jour } @else { Enregistrer }
+    </button>
+  </form>
+</div>
