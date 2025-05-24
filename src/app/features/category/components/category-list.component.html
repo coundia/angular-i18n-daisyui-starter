@@ -16,14 +16,14 @@
           <div class="flex justify-between items-center">
             <div>
               <div class="font-semibold">{{ category.name }}</div>
-              <div class="text-sm text-neutral-content">{{ category.typeCategoryRaw }} - {{ category.details }}</div>
+              <div class="text-sm  ">{{ category.typeCategoryRaw }} - {{ category.details }}</div>
             </div>
-            <button class="btn btn-sm btn-error" (click)="delete(category)">Supprimer</button>
+            <button class="btn btn-sm  " (click)="delete(category)">Supprimer</button>
           </div>
         </li>
       }
     </ul>
   } @else {
-    <p class="text-neutral-content">Aucune catégorie disponible</p>
+    <p  >Aucune catégorie disponible</p>
   }
 </div>
