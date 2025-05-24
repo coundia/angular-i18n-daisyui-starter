@@ -1,29 +1,56 @@
-<div class="p-4">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-bold">Catégories</h2>
-    <a
-      routerLink="/category/new"
-      class="btn btn-sm btn-primary"
-    >
-      Nouvelle
-    </a>
+<div class="p-6 space-y-4">
+  <div class="flex justify-between items-center">
+    <h2 class="text-xl font-bold text-primary">Catégories</h2>
+    <div class="flex gap-2">
+      <a routerLink="/category/new" class="btn btn-sm btn-primary">Nouvelle</a>
+      <button class="btn btn-sm btn-outline" (click)="refresh()">Rafraîchir</button>
+    </div>
   </div>
 
   @if (list().length > 0) {
-    <ul class="space-y-3">
-      @for (category of list(); track category.id) {
-        <li class="p-4 rounded bg-base-200 shadow-sm">
-          <div class="flex justify-between items-center">
-            <div>
-              <div class="font-semibold">{{ category.name }}</div>
-              <div class="text-sm  ">{{ category.typeCategoryRaw }} - {{ category.details }}</div>
-            </div>
-            <button class="btn btn-sm  " (click)="delete(category)">Supprimer</button>
-          </div>
-        </li>
-      }
-    </ul>
+    <div class="overflow-x-auto shadow border border-base-300 rounded-xl">
+      <table class="table table-xs w-full">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Type</th>
+          <th>Détails</th>
+          <th>Actif</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (category of list(); let i = $index; track category.id) {
+            <tr>
+              <th>{{ i + 1 }}</th>
+              <td>{{ category.name }}</td>
+              <td>
+                <span class="badge badge-sm"
+                      [ngClass]="category.typeCategoryRaw === 'IN' ? 'badge-success' : 'badge-error'">
+                  {{ category.typeCategoryRaw === 'IN' ? 'Entrée' : 'Sortie' }}
+                </span>
+              </td>
+              <td>{{ category.details || '-' }}</td>
+              <td>
+                <input type="checkbox" class="checkbox checkbox-xs" [checked]="category.isActive" disabled />
+              </td>
+              <td>
+                <div class="flex gap-1">
+                  <a [routerLink]="['/category', category.id, 'edit']" class="btn btn-xs btn-outline btn-info">
+                    Modifier
+                  </a>
+                  <button class="btn btn-xs btn-outline btn-error" (click)="delete(category)">
+                    Supprimer
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   } @else {
-    <p  >Aucune catégorie disponible</p>
+    <div class="text-center text-base-content/60 italic">Aucune catégorie disponible</div>
   }
 </div>

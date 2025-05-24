@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 import {CategoryService} from '../services/category.service';
 import {Category} from '../models/category.model';
 import {RouterLink} from '@angular/router';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NgClass
   ],
   templateUrl: './category-list.component.html'
 })
@@ -22,4 +24,9 @@ export class CategoryListComponent {
   delete(category: Category) {
     this.service.delete(category.id).subscribe(() => this.service.fetchAll());
   }
+
+  refresh() {
+    this.service.fetchAll();
+  }
+
 }

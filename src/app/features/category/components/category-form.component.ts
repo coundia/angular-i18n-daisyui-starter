@@ -69,6 +69,16 @@ export class CategoryFormComponent {
       ? this.service.update(this.id!, data)
       : this.service.create(data);
 
-    request.subscribe(() => this.router.navigate(['/category']));
+
+    request.subscribe(() => {
+      this.router.navigate(['/category']).then(() => {
+        setTimeout(() => {
+          this.service.fetchAll();
+        }, 2000);
+      });
+    });
+
+
+
   }
 }
