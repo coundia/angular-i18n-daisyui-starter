@@ -1,0 +1,19 @@
+<div class="flex items-center justify-start gap-2 cursor-pointer select-none group" (click)="onToggle()">
+
+  <div class="flex flex-col leading-none text-xs">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+         [ngClass]="{ 'text-primary': isAsc(), 'text-base-content/30 group-hover:text-base-content/50': !isAsc() }"
+         fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 6l-4 4h8l-4-4z" clip-rule="evenodd"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+         [ngClass]="{ 'text-primary': isDesc(), 'text-base-content/30 group-hover:text-base-content/50': !isDesc() }"
+         fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M10 14l4-4H6l4 4z" clip-rule="evenodd"/>
+    </svg>
+  </div>
+
+  <span class="text-sm font-medium text-base-content group-hover:text-primary transition-colors">
+    {{ label }}
+  </span>
+</div>

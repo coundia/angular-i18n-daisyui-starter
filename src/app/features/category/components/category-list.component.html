@@ -8,9 +8,11 @@
       [fields]="fieldsToDisplay"
       [searchField]="searchField"
       [searchTerm]="searchTerm"
+      (searchFieldChange)="searchField = $event"
       (search)="onSearch($event)"
       (clear)="clearSearch()"
     />
+
 
     <div class="flex flex-wrap gap-2">
 
@@ -32,22 +34,24 @@
   @if (list().length > 0) {
     <div class="  rounded-xl border border-base-300 shadow bg-base-200">
 
-      <table class="table table-xs table-fixed w-full text-center">
+      <table class="table table-xs table-fixed w-full  ">
         <thead class="bg-base-300 text-base-content/80">
         <tr>
           <th>#</th>
           @for (field of fieldsToDisplay; track field.name) {
-            <th>{{ field.displayName }}</th>
+            <th class="text-left ">
+              <app-sort-header [field]="field.name" [label]="field.displayName" />
+            </th>
           }
           <th class="text-right">Actions</th>
         </tr>
         </thead>
         <tbody>
-          @for (category of list(); let i = $index; track category.id) {
+          @for (category of  sortedList(); let i = $index; track category.id) {
             <tr class="hover">
               <th>{{ i + 1 }}</th>
               @for (field of fieldsToDisplay; track field.name) {
-                <td [ngSwitch]="field.type" class="truncate max-w-[12rem]">
+                <td [ngSwitch]="field.type" class="truncate max-w-[12rem] pl-8">
                   <span *ngSwitchCase="'badge'" class="badge badge-sm"
                   [ngClass]="getFieldValue(category, field.name) === 'IN' ? 'badge-success' : 'badge-error'">
                   {{ getFieldValue(category, field.name) === 'IN' ? 'Entrée' : 'Sortie' }}

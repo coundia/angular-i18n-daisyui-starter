@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {Component, computed, EventEmitter, inject, Input, OnInit, Output, signal} from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category.model';
 import {NgClass, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
@@ -16,6 +16,8 @@ import { GlobalDrawerComponent } from '../../../shared/components/drawer/global-
 import {FieldDefinition} from '../../../shared/components/models/field-definition';
 import {GlobalDrawerFormComponent} from '../../../shared/components/drawer/app-global-drawer-form';
 import {getDefaultValue} from '../../../shared/hooks/Parsing';
+import {SortHeaderComponent} from '../../../shared/components/tri/sort-header.component';
+import {SortService} from '../../../shared/components/tri/sort.service';
 
 @Component({
   selector: 'app-category-list',
@@ -36,13 +38,14 @@ import {getDefaultValue} from '../../../shared/hooks/Parsing';
     GlobalDrawerFormComponent,
     GlobalDrawerComponent,
     NgIf,
+    SortHeaderComponent
   ],
   templateUrl: './category-list.component.html',
 })
 export class CategoryListComponent implements OnInit {
   readonly service = inject(CategoryService);
   readonly alert = inject(AlertService);
-  readonly toast = inject(ToastService);
+  readonly sortService = inject(SortService);
 
   readonly list = this.service.categories;
   readonly totalPages = this.service.totalPages;
@@ -52,6 +55,10 @@ export class CategoryListComponent implements OnInit {
 
   searchField = 'name';
   searchTerm = '';
+
+  @Output() searchFieldChange = new EventEmitter<string>();
+
+  @Output() searchTermChange = new EventEmitter<string>();
 
   readonly selectedCategory = signal<Category | null>(null);
   readonly allFields: FieldDefinition[] = [
@@ -262,5 +269,29 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
+
+  private   normalizeForCompare(value: any): string {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'boolean') return value ? '1' : '0';
+    return String(value).toLowerCase();
+  }
+
+  readonly sortedList = computed(() => {
+    const { active, direction } = this.sortService.state();
+    const data = this.list();
+    if (!active || !direction) return data;
+
+    return [...data].sort((a, b) => {
+      const aValue = this.normalizeForCompare(this.getFieldValue(a, active));
+      const bValue = this.normalizeForCompare(this.getFieldValue(b, active));
+      return direction === 'asc'
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    });
+  });
+
+  selectedFieldType(): string {
+    return this.fieldsToDisplay.find(f => f.name === this.searchField)?.type ?? 'text';
+  }
 
 }

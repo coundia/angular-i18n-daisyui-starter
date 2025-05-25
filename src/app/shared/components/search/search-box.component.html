@@ -1,31 +1,61 @@
-<div class="flex gap-2 items-center">
-  <select [(ngModel)]="searchField" class="select select-md select-bordered">
-    @for (f of fields; track f.name) {
-      <option [value]="f.name">{{ f.displayName }}</option>
-    }
-  </select>
+<div class="flex   items-center gap-3 w-full">
+  <label class="form-control  w-full">
+    <select
+      [(ngModel)]="searchField"
+      (ngModelChange)="onSearchFieldChange($event)"
+      class="select select-md select-bordered w-full"
+      aria-label="Champ de recherche"
+    >
+      @for (f of fields; track f.name) {
+        <option [value]="f.name">{{ f.displayName }}</option>
+      }
+    </select>
+  </label>
 
   @if (selectedType === 'boolean') {
-    <select [(ngModel)]="searchTerm" class="select select-md select-bordered w-full max-w-xs">
-      <option [value]="'true'">Oui</option>
-      <option [value]="'false'">Non</option>
-    </select>
+    <label class="form-control max-w-xs w-full">
+      <select
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+        class="select select-md select-bordered w-full"
+        aria-label="Valeur booléenne"
+      >
+        <option [value]="'true'">Oui</option>
+        <option [value]="'false'">Non</option>
+      </select>
+    </label>
   } @else if (selectedType === 'date') {
-    <input
-      type="date"
-      [(ngModel)]="searchTerm"
-      class="input input-md input-bordered w-full max-w-xs"
-    />
+    <label class="form-control max-w-xs w-full">
+      <input
+        type="date"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+        class="input input-md input-bordered w-full"
+        aria-label="Date de recherche"
+        #searchInput
+      />
+    </label>
   } @else {
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      (keyup.enter)="emitSearch()"
-      placeholder="Recherche..."
-      class="input input-md input-bordered w-full max-w-xs"
-    />
+    <label class="form-control max-w-xs w-full">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange($event)"
+        (keyup.enter)="emitSearch()"
+        placeholder="Recherche..."
+        class="input input-md input-bordered w-full"
+        aria-label="Recherche texte"
+        #searchInput
+      />
+    </label>
   }
 
-  <button class="btn btn-sm btn-ghost text-error" (click)="emitClear()">✕</button>
-  <button class="btn btn-sm btn-outline" (click)="emitSearch()">Rechercher</button>
+  <div class="flex gap-2">
+    <button class="btn btn-sm btn-ghost text-error" aria-label="Effacer la recherche" (click)="emitClear()">
+      ✕
+    </button>
+    <button class="btn btn-sm btn-outline" aria-label="Lancer la recherche" (click)="emitSearch()">
+      Rechercher
+    </button>
+  </div>
 </div>
