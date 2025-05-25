@@ -9,11 +9,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FieldDefinition } from '../models/field-definition';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-global-drawer-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './app-global-drawer-form.html',
 })
 export class GlobalDrawerFormComponent {
@@ -21,6 +22,8 @@ export class GlobalDrawerFormComponent {
   @Input() title!: string;
   @Input() fields!: FieldDefinition[];
   @Input() submitLabel = 'Enregistrer';
+  @Input() addLink? = '/';
+  @Input() editLink? = '/';
   @Input() editMode = false;
   @Input() itemId?: string;
   @Input() key = 0;
