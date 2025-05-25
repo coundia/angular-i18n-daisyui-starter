@@ -14,7 +14,7 @@ import {RouterLink} from '@angular/router';
 @Component({
   selector: 'app-global-drawer-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './app-global-drawer-form.html',
 })
 export class GlobalDrawerFormComponent {

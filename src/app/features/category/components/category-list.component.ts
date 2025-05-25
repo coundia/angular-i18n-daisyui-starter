@@ -79,6 +79,8 @@ export class CategoryListComponent implements OnInit {
   readonly fb = inject(FormBuilder);
   form!: FormGroup;
   formKey = signal(0);
+  addLink?: string;
+  editLink?: string;
 
   buildForm(fields: FieldDefinition[], data: Record<string, any> = {}): FormGroup {
     const group: Record<string, any> = {};
@@ -262,6 +264,7 @@ export class CategoryListComponent implements OnInit {
       this.editMode = false;
       this.itemId = undefined;
       this.form = this.buildForm(this.allFields);
+      this.addLink = '/category/new';
     });
   }
 
@@ -275,6 +278,7 @@ export class CategoryListComponent implements OnInit {
       this.editMode = true;
       this.itemId = category.id;
       this.form = this.buildForm(this.allFields, category);
+      this.editLink = `/category/${category.id}/edit`;
     });
   }
 

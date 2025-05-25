@@ -9,7 +9,6 @@
         <button class="btn btn-sm btn-circle btn-ghost" (click)="close()">✕</button>
         <h3 class="text-2xl font-bold text-primary ml-4">{{ title }}</h3>
 
-        <button class="btn btn-sm btn-circle btn-ghost"   [routerLink]="addLink"  >+</button>
       </div>
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
@@ -60,6 +59,7 @@
           <button type="submit" class="btn btn-sm btn-primary ">
             {{ submitLabel }}
           </button>
+
         </div>
       </form>
     </div>
