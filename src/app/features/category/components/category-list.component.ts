@@ -15,6 +15,7 @@ import { PaginationJoinComponent } from '../../../shared/components/pagination/p
 import { GlobalDrawerComponent } from '../../../shared/components/drawer/global-drawer.component';
 import {FieldDefinition} from '../../../shared/components/models/field-definition';
 import {GlobalDrawerFormComponent} from '../../../shared/components/drawer/app-global-drawer-form';
+import {getDefaultValue} from '../../../shared/hooks/Parsing';
 
 @Component({
   selector: 'app-category-list',
@@ -58,7 +59,7 @@ export class CategoryListComponent implements OnInit {
     { name: 'id', displayName: 'ID', type: 'string' },
     { name: 'typeCategoryRaw', displayName: 'Type', type: 'badge' },
     { name: 'createdBy', displayName: 'Créé par', type: 'string' },
-    { name: 'isActive', displayName: 'Actif', type: 'boolean' },
+    { name: 'isActive', displayName: 'Actif', type: 'boolean', defaultValue: '0' },
     { name: 'reference', displayName: 'Référence', type: 'string' },
     { name: 'details', displayName: 'Détails', type: 'string' },
     { name: 'tenant', displayName: 'Tenant', type: 'string' },
@@ -89,7 +90,7 @@ export class CategoryListComponent implements OnInit {
     const group: Record<string, any> = {};
 
     for (const field of fields) {
-      const defaultValue = data[field.name] ?? field.defaultValue ?? null;
+      const defaultValue = data[field.name] ?? getDefaultValue(field) ?? null;
       const isRequired = field.nullable === false;
 
       group[field.name] = [defaultValue, isRequired ? Validators.required : []];
@@ -97,15 +98,6 @@ export class CategoryListComponent implements OnInit {
 
     return this.fb.group(group);
   }
-
-  defaultByType(type?: string): any {
-    switch (type) {
-      case 'boolean': return false;
-      case 'date': return new Date().toISOString().substring(0, 10);
-      default: return '';
-    }
-    }
-
 
   ngOnInit(): void {
     this.refresh();
