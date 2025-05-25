@@ -1,0 +1,11 @@
+<div class="flex justify-center items-center gap-3 p-4">
+  <button class="btn btn-sm" (click)="prev.emit()" [disabled]="page === 0">
+    Précédent
+  </button>
+  <span class="text-sm text-base-content/60">
+    Page {{ page + 1 }} / {{ totalPages }}
+  </span>
+  <button class="btn btn-sm" (click)="next.emit()" [disabled]="page >= totalPages - 1">
+    Suivant
+  </button>
+</div>

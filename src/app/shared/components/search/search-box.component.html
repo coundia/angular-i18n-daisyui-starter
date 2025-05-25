@@ -1,0 +1,31 @@
+<div class="flex gap-2 items-center">
+  <select [(ngModel)]="searchField" class="select select-md select-bordered">
+    @for (f of fields; track f.name) {
+      <option [value]="f.name">{{ f.displayName }}</option>
+    }
+  </select>
+
+  @if (selectedType === 'boolean') {
+    <select [(ngModel)]="searchTerm" class="select select-md select-bordered w-full max-w-xs">
+      <option [value]="'true'">Oui</option>
+      <option [value]="'false'">Non</option>
+    </select>
+  } @else if (selectedType === 'date') {
+    <input
+      type="date"
+      [(ngModel)]="searchTerm"
+      class="input input-md input-bordered w-full max-w-xs"
+    />
+  } @else {
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="emitSearch()"
+      placeholder="Recherche..."
+      class="input input-md input-bordered w-full max-w-xs"
+    />
+  }
+
+  <button class="btn btn-sm btn-ghost text-error" (click)="emitClear()">✕</button>
+  <button class="btn btn-sm btn-outline" (click)="emitSearch()">Rechercher</button>
+</div>

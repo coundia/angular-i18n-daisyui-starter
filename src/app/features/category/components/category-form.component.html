@@ -1,9 +1,7 @@
 <div class="max-w-xl mx-auto p-6 bg-base-100 rounded-2xl shadow-xl space-y-6">
   <a routerLink="/category" class="btn btn-sm btn-outline gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-         viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M15 19l-7-7 7-7" />
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
     </svg>
     Retour à la liste
   </a>
@@ -13,43 +11,34 @@
   </h2>
 
   <form [formGroup]="form" (ngSubmit)="save()" class="space-y-5">
-    <div class="form-control">
-      <label class="label">
-        <span class="label-text">Nom</span>
-      </label>
-      <input type="text" formControlName="name" placeholder="Nom" class="input input-bordered w-full" />
-    </div>
+    @for (field of fields; track field.name) {
+      <div class="form-control" *ngIf="field.type !== 'boolean'">
+        <label class="label">
+          <span class="label-text">{{ field.displayName }}</span>
+        </label>
 
-    <div class="form-control">
-      <label class="label">
-        <span class="label-text">Type</span>
-      </label>
-      <select formControlName="typeCategoryRaw" class="select select-bordered w-full">
-        <option value="IN">Entrée</option>
-        <option value="OUT">Sortie</option>
-      </select>
-    </div>
+        @if (field.type === 'textarea') {
+          <textarea [formControlName]="field.name" class="textarea textarea-bordered w-full" placeholder="{{ field.displayName }}"></textarea>
+        }
+        @else if (field.type === 'select') {
+          <select [formControlName]="field.name" class="select select-bordered w-full">
+            @for (opt of field.options || []; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        }
+        @else {
+          <input type="text" [formControlName]="field.name" class="input input-bordered w-full" placeholder="{{ field.displayName }}" />
+        }
+      </div>
 
-    <div class="form-control">
-      <label class="label">
-        <span class="label-text">Détails</span>
-      </label>
-      <textarea formControlName="details" rows="3" placeholder="Détails" class="textarea textarea-bordered w-full"></textarea>
-    </div>
-
-    <div class="form-control">
-      <label class="label cursor-pointer">
-        <span class="label-text">Actif</span>
-        <input type="checkbox" formControlName="isActive" class="checkbox" />
-      </label>
-    </div>
-
-    <div class="form-control">
-      <label class="label">
-        <span class="label-text">Référence</span>
-      </label>
-      <input type="text" formControlName="reference" placeholder="Référence" class="input input-bordered w-full" />
-    </div>
+      <div class="form-control" *ngIf="field.type === 'boolean'">
+        <label class="label cursor-pointer">
+          <span class="label-text">{{ field.displayName }}</span>
+          <input type="checkbox" [formControlName]="field.name" class="checkbox" />
+        </label>
+      </div>
+    }
 
     <button type="submit" class="btn btn-primary w-full" [disabled]="form.invalid">
       @if (isEdit()) { Mettre à jour } @else { Enregistrer }

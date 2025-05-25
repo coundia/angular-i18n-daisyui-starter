@@ -1,0 +1,65 @@
+<div class="drawer drawer-end z-50" *ngIf="isVisible()">
+  <input id="drawer-form" type="checkbox" class="drawer-toggle" checked />
+  <div class="drawer-content"></div>
+
+  <div class="drawer-side" [attr.key]="key">
+    <label for="drawer-form" class="drawer-overlay" (click)="close()"></label>
+    <div class="bg-base-100 w-[32rem] min-h-full p-6 space-y-6 shadow-xl rounded-l-2xl">
+      <div class="flex items-center">
+        <button class="btn btn-sm btn-circle btn-ghost" (click)="close()">✕</button>
+        <h3 class="text-2xl font-bold text-primary ml-4">{{ title }}</h3>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-4">
+        <ng-container *ngFor="let field of fields; trackBy: trackByKey">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">{{ field.displayName }}</span>
+            </label>
+
+            <ng-container [ngSwitch]="field.type">
+              <input *ngSwitchCase="'string'"
+                     type="text"
+                     class="input input-bordered w-full"
+                     [formControlName]="field.name"
+                     [placeholder]="field.displayName" />
+
+              <textarea *ngSwitchCase="'text'"
+                        rows="3"
+                        class="textarea textarea-bordered w-full"
+                        [formControlName]="field.name"
+                        [placeholder]="field.displayName"></textarea>
+
+              <input *ngSwitchCase="'date'"
+                     type="date"
+                     class="input input-bordered w-full"
+                     [formControlName]="field.name" />
+
+              <select *ngSwitchCase="'select'"
+                      class="select select-bordered w-full"
+                      [formControlName]="field.name">
+                <option *ngFor="let opt of field.options || []" [value]="opt.value">{{ opt.label }}</option>
+              </select>
+
+              <label *ngSwitchCase="'boolean'" class="label cursor-pointer gap-3">
+                <input type="checkbox" class="checkbox" [formControlName]="field.name" />
+                <span class="label-text">{{ field.displayName }}</span>
+              </label>
+
+              <span *ngSwitchDefault class="italic text-neutral">Type non pris en charge</span>
+            </ng-container>
+          </div>
+        </ng-container>
+
+        <div class=" flex justify-between ">
+          <button type="button" class="btn btn-sm btn-outline " *ngIf="editMode" (click)="delete.emit(itemId)">
+            🗑️ Supprimer
+          </button>
+          <button type="submit" class="btn btn-sm btn-primary ">
+            {{ submitLabel }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="drawer drawer-end z-50" *ngIf="visible()">
+  <input id="drawer-detail" type="checkbox" class="drawer-toggle" checked />
+  <div class="drawer-content"></div>
+
+  <div class="drawer-side">
+    <label for="drawer-detail" class="drawer-overlay" (click)="close()"></label>
+    <div class="bg-base-100 w-96 min-h-full p-6 space-y-6 shadow-xl rounded-l-2xl">
+      <div class="flex items-center">
+        <button class="btn btn-sm btn-circle btn-ghost" (click)="close()">✕</button>
+        <h3 class="text-2xl font-bold text-primary">{{ title }}</h3>
+      </div>
+
+      <ul class="text-sm grid grid-cols-2 gap-2">
+        <ng-container *ngFor="let field of fields; trackBy: trackByKey">
+          <span class="font-semibold">{{ field.displayName }} :</span>
+          <ng-container [ngSwitch]="field.type">
+            <span *ngSwitchCase="'boolean'">
+              {{ item[field.name] ? 'Oui' : 'Non' }}
+            </span>
+            <span *ngSwitchCase="'badge'">
+              <span class="badge badge-sm"
+                    [ngClass]="item[field.name] === 'IN' ? 'badge-success' : 'badge-error'">
+                {{ item[field.name] === 'IN' ? 'Entrée' : 'Sortie' }}
+              </span>
+            </span>
+            <span *ngSwitchDefault>
+              {{ item[field.name] || '—' }}
+            </span>
+          </ng-container>
+        </ng-container>
+      </ul>
+
+      <div *ngIf="item['details']">
+        <span class="font-semibold block mb-1">Détails :</span>
+        <p class="bg-base-200 p-3 rounded text-sm">{{ item['details'] || 'Aucun' }}</p>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="flex justify-between gap-2">
+        <a *ngIf="editLink" [routerLink]="editLink" class="btn btn-sm btn-outline btn-info">
+          ✏️ Modifier
+        </a>
+        <button class="btn btn-sm btn-outline btn-error" (click)="onDelete()">
+          🗑️ Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

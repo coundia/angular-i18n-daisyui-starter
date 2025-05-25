@@ -1,0 +1,16 @@
+<div class="flex justify-center items-center gap-3 p-4 join">
+  @for (p of pages(); track p) {
+    @if (p === '...') {
+      <button class="join-item btn btn-disabled btn-sm">...</button>
+    } @else {
+      <button
+        class="join-item btn btn-sm btn-square transition-colors"
+        [class.btn-primary]="p === page"
+        [class.btn-outline]="p !== page"
+        (click)="select(p)"
+      >
+        {{ p + 1 }}
+      </button>
+    }
+  }
+</div>

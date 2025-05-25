@@ -4,104 +4,123 @@
 
     <h2 class="text-2xl font-bold text-primary">Catégories</h2>
 
-    <div class="flex gap-2">
-      <select [(ngModel)]="searchField" class="select select-md select-bordered">
-        <option value="name">Nom</option>
-        <option value="id">ID</option>
-        <option value="typeCategoryRaw">Type</option>
-        <option value="createdBy">Créé par</option>
-        <option value="isActive">Actif</option>
-        <option value="reference">Référence</option>
-        <option value="details">Détails</option>
-        <option value="tenant">Tenant</option>
-        <option value="updatedAt">Mis à jour</option>
-      </select>
-
-      <input type="text"
-             [(ngModel)]="searchTerm"
-             (keyup.enter)="search()"
-             placeholder="Recherche..."
-             class="input input-md input-bordered w-full max-w-xs" />
-      <button class="btn btn-sm btn-ghost text-error" (click)="clearSearch()">✕</button>
-
-      <button class="btn btn-sm btn-outline" (click)="search()">Rechercher</button>
-    </div>
+    <app-search-box
+      [fields]="fieldsToDisplay"
+      [searchField]="searchField"
+      [searchTerm]="searchTerm"
+      (search)="onSearch($event)"
+      (clear)="clearSearch()"
+    />
 
     <div class="flex flex-wrap gap-2">
-      <a routerLink="/category/new" class="btn btn-sm btn-primary gap-1">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Nouvelle
-      </a>
-      <button class="btn btn-sm btn-outline" (click)="refresh()">Rafraîchir</button>
+
+      <button class="btn btn-sm btn-primary btn-outline" (click)="openDrawerForCreate()" >Nouvelle Catégorie</button>
+
+      <app-entity-toolbar
+        [createLink]="'/category/new'"
+        [createLabel]="'Nouvelle'"
+        (refresh)="refresh()"
+      />
     </div>
 
   </div>
 
+  @if (isLoading()) {
+    <app-spinner/>
+  }
+
   @if (list().length > 0) {
-    <div class="overflow-x-auto rounded-xl border border-base-300 shadow bg-base-200">
-      <table class="table table-xs w-full text-center">
+    <div class="  rounded-xl border border-base-300 shadow bg-base-200">
+      <table class="table table-xs table-fixed w-full text-center">
         <thead class="bg-base-300 text-base-content/80">
         <tr>
           <th>#</th>
-          <th>Nom</th>
-          <th>Type</th>
-          <th>Détails</th>
-          <th>Actif</th>
-          <th>Actions</th>
+          @for (field of fieldsToDisplay; track field.name) {
+            <th>{{ field.displayName }}</th>
+          }
+          <th class="text-right">Actions</th>
         </tr>
         </thead>
         <tbody>
           @for (category of list(); let i = $index; track category.id) {
             <tr class="hover">
               <th>{{ i + 1 }}</th>
-              <td class="font-semibold">{{ category.name }}</td>
-              <td>
-                <span class="badge badge-sm"
-                      [ngClass]="category.typeCategoryRaw === 'IN' ? 'badge-success' : 'badge-error'">
-                  {{ category.typeCategoryRaw === 'IN' ? 'Entrée' : 'Sortie' }}
-                </span>
-              </td>
-              <td class="text-left">{{ category.details || '-' }}</td>
-              <td>
-                <input type="checkbox" class="checkbox checkbox-xs" [checked]="category.isActive" disabled />
-              </td>
-              <td>
-                <div class="flex justify-center gap-1">
-                  <button class="btn btn-xs btn-outline btn-primary" (click)="showDetails(category.id)">
-                    Voir
-                  </button>
+              @for (field of fieldsToDisplay; track field.name) {
+                <td [ngSwitch]="field.type" class="truncate max-w-[12rem]">
+                  <span *ngSwitchCase="'badge'" class="badge badge-sm"
+                  [ngClass]="getFieldValue(category, field.name) === 'IN' ? 'badge-success' : 'badge-error'">
+                  {{ getFieldValue(category, field.name) === 'IN' ? 'Entrée' : 'Sortie' }}
+                  </span>
 
-                  <a [routerLink]="['/category', category.id, 'edit']"
-                     class="btn btn-xs btn-outline btn-info">
-                    Modifier
-                  </a>
-                  <button class="btn btn-xs btn-outline btn-error" (click)="delete(category)">
-                    Supprimer
-                  </button>
-                </div>
+                  <span *ngSwitchCase="'boolean'">
+                  <input type="checkbox" class="checkbox checkbox-xs" [checked]="getFieldValue(category, field.name)" disabled />
+                  </span>
+
+                  <span *ngSwitchDefault class="text-left">
+                  {{ getFieldValue(category, field.name) || '-' }}
+                  </span>
+                </td>
+
+              }
+
+              <td class="flex justify-end">
+
+                <app-entity-actions
+                  [id]="category.id"
+                  [editLink]="'/category/' + category.id + '/edit'"
+                  (view)="showDetails(category.id)"
+                  (remove)="deleteById(category.id)"
+                  (edit)="openDrawerForEdit(category)"
+                />
               </td>
             </tr>
           }
         </tbody>
+
       </table>
 
-      <div class="flex justify-center items-center gap-3 p-4">
-        <button class="btn btn-sm" (click)="prev()" [disabled]="page() === 0">Précédent</button>
-        <span class="text-sm text-base-content/60">Page {{ page() + 1 }} / {{ totalPages() }}</span>
-        <button class="btn btn-sm" (click)="next()" [disabled]="page() >= totalPages() - 1">Suivant</button>
-      </div>
+      <app-pagination-controls
+        [page]="page()"
+        [totalPages]="totalPages()"
+        (prev)="prev()"
+        (next)="next()"
+      />
+      <app-pagination-join
+        [page]="page()"
+        [totalPages]="totalPages()"
+        (pageChange)="page.set($event); refresh()"
+      />
+
     </div>
   } @else {
-    <div class="text-center text-base-content/60 italic bg-base-200 py-8 rounded-xl shadow">
-      Aucune catégorie disponible
-    </div>
+    <app-empty-state message="Aucune catégorie disponible"/>
   }
 </div>
 
-<app-category-drawer
+<app-global-drawer
   *ngIf="selectedCategory()"
-  [category]="selectedCategory()!"
+  [item]="selectedCategory()!"
+  [title]="'Détails catégorie'"
+  [fields]="allFields"
+  [editLink]="'/category/' + selectedCategory()?.id + '/edit'"
+  (remove)="deleteById($event)"
 />
+
+<app-global-drawer-form
+  *ngIf="drawerVisible"
+  [title]="title"
+  [fields]="allFields"
+  [form]="form"
+  [submitLabel]="submitLabel"
+  [editMode]="editMode"
+  [itemId]="itemId"
+  [attr.key]="formKey()"
+  (save)="handleSave($event)"
+  (delete)="handleDelete($event)"
+/>
+
+
+
+
+
+
