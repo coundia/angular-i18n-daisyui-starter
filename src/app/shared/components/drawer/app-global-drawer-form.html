@@ -43,8 +43,7 @@
               </select>
 
               <label *ngSwitchCase="'boolean'" class="label cursor-pointer gap-3">
-                <input type="checkbox" class="checkbox" [formControlName]="field.name" />
-                <span class="label-text">{{ field.displayName }}</span>
+                <input type="checkbox" class="toggle toggle-primary m-4" [formControlName]="field.name" />
               </label>
 
               <span *ngSwitchDefault class="italic text-neutral">Type non pris en charge</span>

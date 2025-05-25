@@ -31,6 +31,7 @@
 
   @if (list().length > 0) {
     <div class="  rounded-xl border border-base-300 shadow bg-base-200">
+
       <table class="table table-xs table-fixed w-full text-center">
         <thead class="bg-base-300 text-base-content/80">
         <tr>
@@ -53,7 +54,7 @@
                   </span>
 
                   <span *ngSwitchCase="'boolean'">
-                  <input type="checkbox" class="checkbox checkbox-xs" [checked]="getFieldValue(category, field.name)" disabled />
+                  <input type="checkbox" class="toggle toggle-primary" [checked]="getFieldValue(category, field.name)" disabled />
                   </span>
 
                   <span *ngSwitchDefault class="text-left">
@@ -109,7 +110,7 @@
 <app-global-drawer-form
   *ngIf="drawerVisible"
   [title]="title"
-  [fields]="allFields"
+  [fields]="fieldsToDisplay"
   [form]="form"
   [submitLabel]="submitLabel"
   [editMode]="editMode"

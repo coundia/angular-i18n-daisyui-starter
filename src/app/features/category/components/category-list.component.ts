@@ -67,7 +67,7 @@ export class CategoryListComponent implements OnInit {
 
   readonly fieldsToDisplay: FieldDefinition[] = [
     { name: 'name', displayName: 'Nom', type: 'string' },
-    // { name: 'typeCategoryRaw', displayName: 'Type', type: 'select' },
+    { name: 'typeCategoryRaw', displayName: 'Type', type: 'select' },
     { name: 'details', displayName: 'Détails', type: 'string' },
     { name: 'isActive', displayName: 'Actif', type: 'boolean' },
   ];
