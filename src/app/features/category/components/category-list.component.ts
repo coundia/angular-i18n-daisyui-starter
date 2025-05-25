@@ -49,6 +49,9 @@ export class CategoryListComponent implements OnInit {
   readonly page = signal(0);
   readonly size = signal(10);
 
+  searchField = 'name';
+  searchTerm = '';
+
   readonly selectedCategory = signal<Category | null>(null);
   readonly allFields: FieldDefinition[] = [
     { name: 'name', displayName: 'Nom', type: 'string' },
@@ -102,9 +105,6 @@ export class CategoryListComponent implements OnInit {
       default: return '';
     }
     }
-
-  searchField = 'name';
-  searchTerm = '';
 
 
   ngOnInit(): void {
@@ -193,18 +193,6 @@ export class CategoryListComponent implements OnInit {
     return (item as Record<string, any>)[field];
   }
 
-  onSave(data: Record<string, any>) {
-    this.service.create(data).subscribe({
-      next: () => {
-        this.alert.show('Catégorie créée avec succès', 'success');
-        this.refresh();
-      },
-      error: err => {
-        console.error('[create] erreur', err);
-        this.alert.show('Erreur lors de la création', 'error');
-      }
-    });
-  }
 
   handleSave(data: any) {
     if (this.editMode && this.itemId) {
