@@ -9,7 +9,6 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FieldDefinition } from '../models/field-definition';
-import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-global-drawer-form',
