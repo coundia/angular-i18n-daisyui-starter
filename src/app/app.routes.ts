@@ -8,11 +8,19 @@ import { authGuard } from './shared/security/guard/auth.guard';
 import { userProfileRoutes } from './user-profile/user.routes';
 import { categoryRoutes } from './features/category/category.routes';
 import {settingRoutes} from './features/Setting/setting.routes';
+import {accountRoutes} from './features/Account/account.routes';
+import {accountUserRoutes} from './features/AccountUser/accountUser.routes';
+import {chatRoutes} from './features/Chat/chat.routes';
+import {transactionRoutes} from './features/Transaction/transaction.routes';
 
 export const routes: Routes = [
   ...categoryRoutes,
   ...userProfileRoutes,
   ...settingRoutes,
+  ...accountRoutes,
+  ...accountUserRoutes,
+  ...chatRoutes,
+  ...transactionRoutes,
 
   { path: '', component: HomeComponent },
   { path: 'security/login', component: LoginComponent },

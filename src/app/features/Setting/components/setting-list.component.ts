@@ -15,10 +15,12 @@ import { PaginationJoinComponent } from '../../../shared/components/pagination/p
 import { GlobalDrawerComponent } from '../../../shared/components/drawer/global-drawer.component';
 import {FieldDefinition} from '../../../shared/components/models/field-definition';
 import {GlobalDrawerFormComponent} from '../../../shared/components/drawer/app-global-drawer-form';
-import {getDefaultValue} from '../../../shared/hooks/Parsing';
+
 import {SortHeaderComponent} from '../../../shared/components/tri/sort-header.component';
 import {SortService} from '../../../shared/components/tri/sort.service';
 import {SHARED_IMPORTS} from '../../../shared/constantes/shared-imports';
+
+import {getDefaultValue, toDatetimeLocalString} from '../../../shared/hooks/Parsing';
 
 
 @Component({
@@ -63,21 +65,21 @@ export class SettingListComponent implements OnInit {
 
   readonly selectedItem = signal<Setting | null>(null);
   readonly allFields: FieldDefinition[] = [
-    { name: 'id', displayName: '', type: 'string', defaultValue: '&quot;&quot;' },
-    { name: 'name', displayName: 'Clé', type: 'string', defaultValue: '&quot;&quot;' },
-    { name: 'value', displayName: 'Valeur', type: 'string', defaultValue: '&quot;&quot;' },
-    { name: 'locale', displayName: 'Langue', type: 'string', defaultValue: '&quot;&quot;' },
-    { name: 'details', displayName: 'Description', type: 'string', defaultValue: '&quot;NA&quot;' },
-    { name: 'isActive', displayName: '', type: 'boolean', defaultValue: 'true' },
-    { name: 'updatedAt', displayName: '', type: 'string', defaultValue: '&quot;&quot;' },
-    { name: 'reference', displayName: '', type: 'string', defaultValue: '&quot;&quot;' },
+    { name: 'id' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'name' , displayName: 'Clé', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'value' , displayName: 'Valeur', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'locale' , displayName: 'Langue', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'details' , displayName: 'Description', type: 'string', defaultValue: '&quot;NA&quot;' , entityType: 'String'},
+    { name: 'isActive' , displayName: '', type: 'boolean', defaultValue: 'true' , entityType: 'Boolean'},
+    { name: 'updatedAt' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'Date'},
+    { name: 'reference' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
   ];
 
   readonly fieldsToDisplay: FieldDefinition[] = [
-    { name: 'name', displayName: 'Clé', type: 'string' },
-    { name: 'value', displayName: 'Valeur', type: 'string' },
-    { name: 'locale', displayName: 'Langue', type: 'string' },
-    { name: 'details', displayName: 'Description', type: 'string' },
+    { name: 'name', displayName: 'Clé', type: 'string' , entityType: 'String' },
+    { name: 'value', displayName: 'Valeur', type: 'string' , entityType: 'String' },
+    { name: 'locale', displayName: 'Langue', type: 'string' , entityType: 'String' },
+    { name: 'details', displayName: 'Description', type: 'string' , entityType: 'String' },
   ];
 
   drawerVisible = false;
@@ -97,6 +99,12 @@ export class SettingListComponent implements OnInit {
     for (const field of fields) {
       const defaultValue = data[field.name] ?? getDefaultValue(field) ?? null;
       const isRequired = field.nullable === false;
+
+      if (field.entityType === 'Date' || field.type === 'date') {
+        group[field.name] = [toDatetimeLocalString(defaultValue), isRequired ? Validators.required : []];
+        continue;
+      }
+
       group[field.name] = [defaultValue, isRequired ? Validators.required : []];
     }
     return this.fb.group(group);
@@ -121,16 +129,16 @@ export class SettingListComponent implements OnInit {
     const item = this.list().find(e => e.id === id);
     if (!item) return;
 
-    const confirmed = window.confirm(`Supprimer "${item.name}" ?`);
+    const confirmed = window.confirm(`Supprimer "${item.id}" ?`);
     if (!confirmed) return;
 
     this.service.delete(id).subscribe({
       next: () => {
-        this.alert.show(`Setting "${item.name}" supprimé(e)`, 'success');
+        this.alert.show(`Setting "${item.id}" supprimé(e)`, 'success');
         setTimeout(() => this.refresh(), 1500);
       },
       error: err => {
-        this.alert.show(`Erreur suppression "${item.name}"`, 'error');
+        this.alert.show(`Erreur suppression "${item.id}"`, 'error');
       }
     });
   }
@@ -183,7 +191,12 @@ export class SettingListComponent implements OnInit {
   }
 
   handleSave(data: any) {
+    const now = new Date().toISOString();
+    data.updatedAt = new Date(data.updatedAt || now).toISOString();
+
     if (this.editMode && this.itemId) {
+
+
       this.service.update(this.itemId, data).subscribe({
         next: () => {
           this.alert.show('Setting mis(e) à jour avec succès', 'success');
@@ -195,6 +208,8 @@ export class SettingListComponent implements OnInit {
         }
       });
     } else {
+
+
       this.service.create(data).subscribe({
         next: () => {
           this.alert.show('Setting créé(e) avec succès', 'success');

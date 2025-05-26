@@ -1,4 +1,4 @@
-export type TypeSetting = 'IN' | 'OUT';
+export type TypeSetting = 'TYPE1' | 'TYPE2';
 
 export interface Setting {
     id: string;

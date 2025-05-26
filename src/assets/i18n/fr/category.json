@@ -1,0 +1,8 @@
+{
+  "category": {
+	"title": "Category",
+	"new": "Nouveau category",
+	"details": "Détails du category",
+	"none": "Aucun category disponible"
+  }
+}

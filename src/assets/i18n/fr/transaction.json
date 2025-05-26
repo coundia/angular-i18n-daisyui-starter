@@ -1,0 +1,8 @@
+{
+  "transaction": {
+	"title": "Transaction",
+	"new": "Nouveau transaction",
+	"details": "Détails du transaction",
+	"none": "Aucun transaction disponible"
+  }
+}

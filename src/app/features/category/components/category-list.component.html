@@ -2,7 +2,9 @@
 
   <div class="flex flex-col md:flex-row justify-between gap-4   md:items-center">
 
-    <h2 class="text-2xl font-bold text-primary">Catégories</h2>
+    <h2 class="text-2xl font-bold text-primary">
+    {{ 'category.title' | translate }}
+    </h2>
 
     <app-search-box
       [fields]="fieldsToDisplay"
@@ -13,18 +15,17 @@
       (clear)="clearSearch()"
     />
 
-
     <div class="flex flex-wrap gap-2">
-
-      <button class="btn btn-sm btn-primary btn-outline" (click)="openDrawerForCreate()" >Nouvelle Catégorie</button>
+      <button class="btn btn-sm btn-primary btn-outline" (click)="openDrawerForCreate()">
+        {{ 'category.new' | translate }}
+      </button>
 
       <app-entity-toolbar
         [createLink]="'/category/new'"
-        [createLabel]="'Nouvelle'"
+        [createLabel]=" 'category.new' | translate  "
         (refresh)="refresh()"
       />
     </div>
-
   </div>
 
   @if (isLoading()) {
@@ -32,9 +33,9 @@
   }
 
   @if (list().length > 0) {
-    <div class="  rounded-xl border border-base-300 shadow bg-base-200">
+    <div class="rounded-xl border border-base-300 shadow bg-base-200">
 
-      <table class="table table-xs table-fixed w-full  ">
+      <table class="table table-xs table-fixed w-full">
         <thead class="bg-base-300 text-base-content/80">
         <tr>
           <th>#</th>
@@ -43,45 +44,37 @@
               <app-sort-header [field]="field.name" [label]="field.displayName" />
             </th>
           }
-          <th class="text-right">Actions</th>
+          <th class="text-right"> {{ 'actions' | translate }} </th>
         </tr>
         </thead>
         <tbody>
-          @for (category of  sortedList(); let i = $index; track category.id) {
+          @for (item of sortedList(); let i = $index; track item.id) {
             <tr class="hover">
-              <th>{{ i + 1 }}</th>
+              <th>{{  i + 1 }} </th>
               @for (field of fieldsToDisplay; track field.name) {
                 <td [ngSwitch]="field.type" class="truncate max-w-[12rem] pl-8">
-                  <span *ngSwitchCase="'badge'" class="badge badge-sm"
-                  [ngClass]="getFieldValue(category, field.name) === 'IN' ? 'badge-success' : 'badge-error'">
-                  {{ getFieldValue(category, field.name) === 'IN' ? 'Entrée' : 'Sortie' }}
-                  </span>
 
                   <span *ngSwitchCase="'boolean'">
-                  <input type="checkbox" class="toggle toggle-primary" [checked]="getFieldValue(category, field.name)" disabled />
+                    <input type="checkbox" class="toggle toggle-primary" [checked]="getFieldValue(item, field.name)" disabled />
                   </span>
-
-                  <span *ngSwitchDefault class="text-left">
-                  {{ getFieldValue(category, field.name) || '-' }}
-                  </span>
+                    <span *ngSwitchDefault class="text-left">
+                    {{ getFieldValue(item, field.name) || '-' }}
+                    </span>
                 </td>
-
               }
 
               <td class="flex justify-end">
-
                 <app-entity-actions
-                  [id]="category.id"
-                  [editLink]="'/category/' + category.id + '/edit'"
-                  (view)="showDetails(category.id)"
-                  (remove)="deleteById(category.id)"
-                  (edit)="openDrawerForEdit(category)"
+                  [id]="item.id"
+                  [editLink]="'/category/' + item.id + '/edit'"
+                  (view)="showDetails(item.id)"
+                  (remove)="deleteById(item.id)"
+                  (edit)="openDrawerForEdit(item)"
                 />
               </td>
             </tr>
           }
         </tbody>
-
       </table>
 
       <app-pagination-controls
@@ -98,19 +91,19 @@
 
     </div>
   } @else {
-    <app-empty-state message="Aucune catégorie disponible"/>
+    <app-empty-state message="{{ 'category.none' | translate }}"/>
   }
 </div>
 
 <app-global-drawer
-  *ngIf="selectedCategory()"
-  [item]="selectedCategory()!"
-  [title]="'Détails catégorie'"
+  *ngIf="selectedItem()"
+  [item]="selectedItem()!"
+  [title]= " 'category.details' | translate  "
   [fields]="allFields"
-  [editLink]="'/category/' + selectedCategory()?.id + '/edit'"
-  [viewLink]="'/category/' + selectedCategory()?.id + '/view'"
-  [addLink]="'/category/new'"
   (remove)="deleteById($event)"
+   [editLink]="'/category/' + selectedItem()?.id  + '/edit'"
+  [viewLink]="'/category/' + selectedItem()?.id  + '/view'"
+  [addLink]="'/category/new'"
 />
 
 <app-global-drawer-form
@@ -127,11 +120,4 @@
   [editLink]="'/category/' + itemId + '/edit'"
   [viewLink]="'/category/' + itemId + '/view'"
   [addLink]="'/category/new'"
-
 />
-
-
-
-
-
-

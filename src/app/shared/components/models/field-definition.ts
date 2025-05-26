@@ -2,6 +2,7 @@ export type FieldDefinition = {
   name: string;
   displayName: string;
   type?: FieldType;
+  entityType?: string;
   nullable?: boolean;
   relation?: string;
   defaultValue?: string;

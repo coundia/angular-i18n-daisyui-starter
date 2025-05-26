@@ -11,7 +11,7 @@ export class CategoryService {
   private readonly auth = inject(AuthService);
   private readonly base = `${API_BASE}/v1`;
 
-  readonly categories = signal<Category[]>([]);
+  readonly categorys = signal<Category[]>([]);
   readonly totalPages = signal(0);
   readonly totalElements = signal(0);
 
@@ -30,7 +30,7 @@ export class CategoryService {
       )
       .pipe(
         tap(res => {
-          this.categories.set(res.content);
+          this.categorys.set(res.content);
           this.totalPages.set(res.totalPages ?? 0);
           this.totalElements.set(res.totalElements ?? 0);
         })
@@ -75,9 +75,8 @@ export class CategoryService {
         `${this.base}/queries/category/${field}?${field}=${encodeURIComponent(formattedValue)}`,
         { headers: this.headers() }
       )
-      .pipe(tap(res => this.categories.set(res)));
+      .pipe(tap(res => this.categorys.set(res)));
   }
-
 
   getById(id: string): Observable<Category> {
     return this.http.get<Category>(
@@ -88,13 +87,10 @@ export class CategoryService {
 
   private getFieldType(field: string): 'string' | 'boolean' | 'date' {
     switch (field) {
-      case 'isActive':
-        return 'boolean';
       case 'updatedAt':
         return 'date';
       default:
         return 'string';
     }
   }
-
 }

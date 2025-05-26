@@ -1,0 +1,8 @@
+{
+  "chat": {
+	"title": "Chat",
+	"new": "Nouveau chat",
+	"details": "Détails du chat",
+	"none": "Aucun chat disponible"
+  }
+}

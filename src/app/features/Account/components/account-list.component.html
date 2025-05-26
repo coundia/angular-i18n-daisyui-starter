@@ -1,0 +1,123 @@
+<div class="p-6 space-y-6 bg-base-100 rounded-xl shadow-inner">
+
+  <div class="flex flex-col md:flex-row justify-between gap-4   md:items-center">
+
+    <h2 class="text-2xl font-bold text-primary">
+    {{ 'account.title' | translate }}
+    </h2>
+
+    <app-search-box
+      [fields]="fieldsToDisplay"
+      [searchField]="searchField"
+      [searchTerm]="searchTerm"
+      (searchFieldChange)="searchField = $event"
+      (search)="onSearch($event)"
+      (clear)="clearSearch()"
+    />
+
+    <div class="flex flex-wrap gap-2">
+      <button class="btn btn-sm btn-primary btn-outline" (click)="openDrawerForCreate()">
+        {{ 'account.new' | translate }}
+      </button>
+
+      <app-entity-toolbar
+        [createLink]="'/account/new'"
+        [createLabel]=" 'account.new' | translate  "
+        (refresh)="refresh()"
+      />
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <app-spinner/>
+  }
+
+  @if (list().length > 0) {
+    <div class="rounded-xl border border-base-300 shadow bg-base-200">
+
+      <table class="table table-xs table-fixed w-full">
+        <thead class="bg-base-300 text-base-content/80">
+        <tr>
+          <th>#</th>
+          @for (field of fieldsToDisplay; track field.name) {
+            <th class="text-left ">
+              <app-sort-header [field]="field.name" [label]="field.displayName" />
+            </th>
+          }
+          <th class="text-right"> {{ 'actions' | translate }} </th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (item of sortedList(); let i = $index; track item.id) {
+            <tr class="hover">
+              <th>{{  i + 1 }} </th>
+              @for (field of fieldsToDisplay; track field.name) {
+                <td [ngSwitch]="field.type" class="truncate max-w-[12rem] pl-8">
+
+                  <span *ngSwitchCase="'boolean'">
+                    <input type="checkbox" class="toggle toggle-primary" [checked]="getFieldValue(item, field.name)" disabled />
+                  </span>
+                    <span *ngSwitchDefault class="text-left">
+                    {{ getFieldValue(item, field.name) || '-' }}
+                    </span>
+                </td>
+              }
+
+              <td class="flex justify-end">
+                <app-entity-actions
+                  [id]="item.id"
+                  [editLink]="'/account/' + item.id + '/edit'"
+                  (view)="showDetails(item.id)"
+                  (remove)="deleteById(item.id)"
+                  (edit)="openDrawerForEdit(item)"
+                />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <app-pagination-controls
+        [page]="page()"
+        [totalPages]="totalPages()"
+        (prev)="prev()"
+        (next)="next()"
+      />
+      <app-pagination-join
+        [page]="page()"
+        [totalPages]="totalPages()"
+        (pageChange)="page.set($event); refresh()"
+      />
+
+    </div>
+  } @else {
+    <app-empty-state message="{{ 'account.none' | translate }}"/>
+  }
+</div>
+
+<app-global-drawer
+  *ngIf="selectedItem()"
+  [item]="selectedItem()!"
+  [title]= " 'account.details' | translate  "
+  [fields]="allFields"
+  (remove)="deleteById($event)"
+   [editLink]="'/account/' + selectedItem()?.id  + '/edit'"
+  [viewLink]="'/account/' + selectedItem()?.id  + '/view'"
+  [addLink]="'/account/new'"
+/>
+
+<app-global-drawer-form
+  *ngIf="drawerVisible"
+  [title]="title"
+  [fields]="fieldsToDisplay"
+  [form]="form"
+  [submitLabel]="submitLabel"
+  [editMode]="editMode"
+  [itemId]="itemId"
+  [attr.key]="formKey()"
+  (save)="handleSave($event)"
+  (delete)="handleDelete($event)"
+  [editLink]="'/account/' + itemId + '/edit'"
+  [viewLink]="'/account/' + itemId + '/view'"
+  [addLink]="'/account/new'"
+/>

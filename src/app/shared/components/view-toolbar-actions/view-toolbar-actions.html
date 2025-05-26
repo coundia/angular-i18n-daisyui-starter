@@ -1,0 +1,36 @@
+
+<div class="flex justify-between items-center mb-4 gap-2">
+  @if (backLink) {
+    <a [routerLink]="backLink" class="btn btn-sm btn-outline flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      {{ backLabel || 'Retour' }}
+    </a>
+  }
+  @if (editLink && showDelete ) {
+    <a [routerLink]="editLink" class="btn btn-sm btn-outline btn-info flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h9"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5h2M5 13l4 4L19 7"/>
+      </svg>
+      {{ editLabel || 'Modifier' }}
+    </a>
+  }
+  @if (showDelete  &&  !editMode) {
+    <button class="btn btn-sm btn-outline btn-error flex items-center gap-2" (click)="delete.emit()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+      {{ deleteLabel || 'Supprimer' }}
+    </button>
+  }
+  @if (newLink) {
+    <a [routerLink]="newLink" class="btn btn-sm btn-outline btn-success flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      {{ newLabel || 'Nouveau' }}
+    </a>
+  }
+</div>

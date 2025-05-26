@@ -15,15 +15,19 @@ import { PaginationJoinComponent } from '../../../shared/components/pagination/p
 import { GlobalDrawerComponent } from '../../../shared/components/drawer/global-drawer.component';
 import {FieldDefinition} from '../../../shared/components/models/field-definition';
 import {GlobalDrawerFormComponent} from '../../../shared/components/drawer/app-global-drawer-form';
-import {getDefaultValue} from '../../../shared/hooks/Parsing';
+
 import {SortHeaderComponent} from '../../../shared/components/tri/sort-header.component';
 import {SortService} from '../../../shared/components/tri/sort.service';
+import {SHARED_IMPORTS} from '../../../shared/constantes/shared-imports';
+
+import {getDefaultValue, toDatetimeLocalString} from '../../../shared/hooks/Parsing';
+
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
   imports: [
-    NgClass,
+    SHARED_IMPORTS,
     FormsModule,
     SpinnerComponent,
     EntityActionsComponent,
@@ -47,7 +51,7 @@ export class CategoryListComponent implements OnInit {
   readonly alert = inject(AlertService);
   readonly sortService = inject(SortService);
 
-  readonly list = this.service.categories;
+  readonly list = this.service.categorys;
   readonly totalPages = this.service.totalPages;
   readonly isLoading = signal(false);
   readonly page = signal(0);
@@ -57,28 +61,22 @@ export class CategoryListComponent implements OnInit {
   searchTerm = '';
 
   @Output() searchFieldChange = new EventEmitter<string>();
-
   @Output() searchTermChange = new EventEmitter<string>();
 
-  readonly selectedCategory = signal<Category | null>(null);
+  readonly selectedItem = signal<Category | null>(null);
   readonly allFields: FieldDefinition[] = [
-    { name: 'name', displayName: 'Nom', type: 'string' },
-    { name: 'id', displayName: 'ID', type: 'string' },
-    { name: 'typeCategoryRaw', displayName: 'Type', type: 'badge' },
-    { name: 'createdBy', displayName: 'Créé par', type: 'string' },
-    { name: 'isActive', displayName: 'Actif', type: 'boolean', defaultValue: '0' },
-    { name: 'reference', displayName: 'Référence', type: 'string' },
-    { name: 'details', displayName: 'Détails', type: 'string' },
-    { name: 'tenant', displayName: 'Tenant', type: 'string' },
-    { name: 'updatedAt', displayName: 'Mis à jour', type: 'date' },
+    { name: 'id' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'name' , displayName: 'Nom', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'typeCategoryRaw' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'enum'},
+    { name: 'details' , displayName: 'Description', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
+    { name: 'isActive' , displayName: '', type: 'boolean', defaultValue: 'true' , entityType: 'Boolean'},
+    { name: 'updatedAt' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'Date'},
+    { name: 'reference' , displayName: '', type: 'string', defaultValue: '&quot;&quot;' , entityType: 'String'},
   ];
 
   readonly fieldsToDisplay: FieldDefinition[] = [
-    { name: 'name', displayName: 'Nom', type: 'string' },
-    { name: 'typeCategoryRaw', displayName: 'Type', type: 'select' },
-    { name: 'isActive', displayName: 'Actif', type: 'boolean' },
-    { name: 'createdBy', displayName: 'Créé par', type: 'string' },
-
+    { name: 'name', displayName: 'Nom', type: 'string' , entityType: 'String' },
+    { name: 'details', displayName: 'Description', type: 'string' , entityType: 'String' },
   ];
 
   drawerVisible = false;
@@ -86,7 +84,6 @@ export class CategoryListComponent implements OnInit {
   submitLabel = '';
   editMode = false;
   itemId?: string;
-
 
   readonly fb = inject(FormBuilder);
   form!: FormGroup;
@@ -96,14 +93,17 @@ export class CategoryListComponent implements OnInit {
 
   buildForm(fields: FieldDefinition[], data: Record<string, any> = {}): FormGroup {
     const group: Record<string, any> = {};
-
     for (const field of fields) {
       const defaultValue = data[field.name] ?? getDefaultValue(field) ?? null;
       const isRequired = field.nullable === false;
 
+      if (field.entityType === 'Date' || field.type === 'date') {
+        group[field.name] = [toDatetimeLocalString(defaultValue), isRequired ? Validators.required : []];
+        continue;
+      }
+
       group[field.name] = [defaultValue, isRequired ? Validators.required : []];
     }
-
     return this.fb.group(group);
   }
 
@@ -116,55 +116,49 @@ export class CategoryListComponent implements OnInit {
     this.service.fetch(this.page(), this.size()).subscribe({
       next: () => this.isLoading.set(false),
       error: err => {
-        this.alert.show('Erreur lors de la récupération des catégories.', 'error');
-        console.error('[fetch] erreur', err);
+        this.alert.show('Erreur lors de la récupération des categorys.', 'error');
         this.isLoading.set(false);
       }
     });
   }
 
   deleteById(id: string): void {
-    const item = this.list().find(c => c.id === id);
+    const item = this.list().find(e => e.id === id);
     if (!item) return;
 
-    const confirmed = window.confirm(`Supprimer "${item.name}" ?`);
+    const confirmed = window.confirm(`Supprimer "${item.id}" ?`);
     if (!confirmed) return;
 
     this.service.delete(id).subscribe({
       next: () => {
-        this.alert.show(`Catégorie "${item.name}" supprimée`, 'success');
+        this.alert.show(`Category "${item.id}" supprimé(e)`, 'success');
         setTimeout(() => this.refresh(), 1500);
       },
       error: err => {
-        this.alert.show(`Erreur suppression "${item.name}"`, 'error');
-        console.error('[delete]', err);
+        this.alert.show(`Erreur suppression "${item.id}"`, 'error');
       }
     });
   }
 
   showDetails(id: string): void {
-    const item = this.list().find(c => c.id === id);
+    const item = this.list().find(e => e.id === id);
     if (!item) return;
-
-    this.selectedCategory.set(null);
-    setTimeout(() => this.selectedCategory.set(item), 0);
+    this.selectedItem.set(null);
+    setTimeout(() => this.selectedItem.set(item), 0);
   }
 
   onSearch({ field, value }: { field: string; value: string }): void {
     this.searchField = field;
     this.searchTerm = value;
-
     if (!value) return this.refresh();
-
     this.isLoading.set(true);
     this.service.search(field, value).subscribe({
-      next: categories => {
-        this.list.set(categories);
+      next: items => {
+        this.list.set(items);
         this.isLoading.set(false);
       },
       error: err => {
         this.alert.show('Erreur lors de la recherche.', 'error');
-        console.error('[search]', err);
         this.isLoading.set(false);
       }
     });
@@ -193,12 +187,16 @@ export class CategoryListComponent implements OnInit {
     return (item as Record<string, any>)[field];
   }
 
-
   handleSave(data: any) {
+    const now = new Date().toISOString();
+    data.updatedAt = new Date(data.updatedAt || now).toISOString();
+
     if (this.editMode && this.itemId) {
+
+
       this.service.update(this.itemId, data).subscribe({
         next: () => {
-          this.alert.show('Catégorie mise à jour avec succès', 'success');
+          this.alert.show('Category mis(e) à jour avec succès', 'success');
           this.closeDrawer();
           this.refresh();
         },
@@ -207,9 +205,11 @@ export class CategoryListComponent implements OnInit {
         }
       });
     } else {
+
+
       this.service.create(data).subscribe({
         next: () => {
-          this.alert.show('Catégorie créée avec succès', 'success');
+          this.alert.show('Category créé(e) avec succès', 'success');
           this.closeDrawer();
           this.refresh();
         },
@@ -221,12 +221,11 @@ export class CategoryListComponent implements OnInit {
   }
 
   handleDelete(id: string) {
-    const confirmed = window.confirm('Supprimer cette catégorie ?');
+    const confirmed = window.confirm('Supprimer cet(te) category ?');
     if (!confirmed) return;
-
     this.service.delete(id).subscribe({
       next: () => {
-        this.alert.show('Catégorie supprimée', 'success');
+        this.alert.show('Category supprimé(e)', 'success');
         this.closeDrawer();
         this.refresh();
       },
@@ -247,7 +246,7 @@ export class CategoryListComponent implements OnInit {
     setTimeout(() => {
       this.drawerVisible = true;
       this.formKey.update(k => k + 1);
-      this.title = 'Nouvelle catégorie';
+      this.title = 'Nouveau category';
       this.submitLabel = 'Sauvegarder';
       this.editMode = false;
       this.itemId = undefined;
@@ -256,22 +255,21 @@ export class CategoryListComponent implements OnInit {
     });
   }
 
-  openDrawerForEdit(category: Category) {
+  openDrawerForEdit(item: Category) {
     this.drawerVisible = false;
     setTimeout(() => {
       this.drawerVisible = true;
       this.formKey.update(k => k + 1);
-      this.title = 'Modifier la catégorie';
+      this.title = 'Modifier category';
       this.submitLabel = 'Mettre à jour';
       this.editMode = true;
-      this.itemId = category.id;
-      this.form = this.buildForm(this.allFields, category);
-      this.editLink = `/category/${category.id}/edit`;
+      this.itemId = item.id;
+      this.form = this.buildForm(this.allFields, item);
+      this.editLink = `/category/${item.id}/edit`;
     });
   }
 
-
-  private   normalizeForCompare(value: any): string {
+  private normalizeForCompare(value: any): string {
     if (value === null || value === undefined) return '';
     if (typeof value === 'boolean') return value ? '1' : '0';
     return String(value).toLowerCase();
@@ -281,7 +279,6 @@ export class CategoryListComponent implements OnInit {
     const { active, direction } = this.sortService.state();
     const data = this.list();
     if (!active || !direction) return data;
-
     return [...data].sort((a, b) => {
       const aValue = this.normalizeForCompare(this.getFieldValue(a, active));
       const bValue = this.normalizeForCompare(this.getFieldValue(b, active));
@@ -294,5 +291,4 @@ export class CategoryListComponent implements OnInit {
   selectedFieldType(): string {
     return this.fieldsToDisplay.find(f => f.name === this.searchField)?.type ?? 'text';
   }
-
 }

@@ -87,6 +87,8 @@ export class SettingService {
 
   private getFieldType(field: string): 'string' | 'boolean' | 'date' {
     switch (field) {
+      case 'updatedAt':
+        return 'date';
       default:
         return 'string';
     }

@@ -3,7 +3,13 @@ import { MultiTranslateHttpLoader } from './MultiTranslateHttpLoader';
 
 //todo get from API
 const TRANSLATION_FILES = [
+   'account',
+  'transaction',
+  'accountUser',
+  'chat',
+  'category',
   'setting',
+  //core
   'general',
   'nav',
   'notification',

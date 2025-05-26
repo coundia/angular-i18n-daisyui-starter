@@ -19,6 +19,37 @@
     </div>
 
     <nav class="p-4 space-y-2">
+
+
+      <app-side-link
+        link="/dashboard"
+        label="Dashboard"
+        [icon]="'M3 13h2v-2H3v2zm0-4h2V7H3v2zm0 8h2v-2H3v2zm4 0h14V5H7v14z'"
+        (clicked)="toggleMenu()"
+      />
+
+      <app-side-link
+        link="/transaction"
+        label="transaction"
+        [icon]="'M3 13h2v-2H3v2zm0-4h2V7H3v2zm0 8h2v-2H3v2zm4 0h14V5H7v14z'"
+        (clicked)="toggleMenu()"
+      />
+
+      <app-side-link
+        link="/chat"
+        label="chat"
+        [icon]="'M3 13h2v-2H3v2zm0-4h2V7H3v2zm0 8h2v-2H3v2zm4 0h14V5H7v14z'"
+        (clicked)="toggleMenu()"
+      />
+
+      <app-side-link
+        link="/account"
+        label="account"
+        [icon]="'M3 13h2v-2H3v2zm0-4h2V7H3v2zm0 8h2v-2H3v2zm4 0h14V5H7v14z'"
+        (clicked)="toggleMenu()"
+      />
+
+
       <app-side-link
         link="/setting"
         label="Setting"
@@ -34,11 +65,12 @@
       />
 
       <app-side-link
-        link="/dashboard"
-        label="Dashboard"
+        link="/accountUser"
+        label="accountUser"
         [icon]="'M3 13h2v-2H3v2zm0-4h2V7H3v2zm0 8h2v-2H3v2zm4 0h14V5H7v14z'"
         (clicked)="toggleMenu()"
       />
+
 
       <app-side-link
         link="/me"

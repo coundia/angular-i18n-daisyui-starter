@@ -1,0 +1,8 @@
+{
+  "account": {
+	"title": "Account",
+	"new": "Nouveau account",
+	"details": "Détails du account",
+	"none": "Aucun account disponible"
+  }
+}
