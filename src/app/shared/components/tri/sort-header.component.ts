@@ -5,7 +5,7 @@ import {SortService} from './sort.service';
 @Component({
   selector: 'app-sort-header',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass ],
   templateUrl: './sort-header.component.html',
 })
 export class SortHeaderComponent {
