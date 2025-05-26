@@ -9,5 +9,5 @@ export interface Category {
   updatedAt?: string;
   reference: string;
   createdBy: string;
-  tenant: string;
+  tenant: string ;
 }

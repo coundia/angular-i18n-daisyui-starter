@@ -13,7 +13,9 @@ export class GlobalDrawerComponent {
   @Input({ required: true }) item!: Record<string, any>;
   @Input({ required: true }) title!: string;
   @Input({ required: true }) fields!: FieldDefinition[];
-  @Input() editLink?: string;
+  @Input() addLink?: string = '/';
+  @Input() editLink?: string = '/';
+  @Input() viewLink?: string = '/';
   @Output() remove = new EventEmitter<string>();
 
   visible = signal(true);

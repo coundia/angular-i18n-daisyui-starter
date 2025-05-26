@@ -7,13 +7,6 @@ import { Category } from '../models/category.model';
 import {AlertService} from '../../../shared/components/alert/alert.service';
 import {FieldDefinition} from '../../../shared/components/models/field-definition';
 
-type CategoryFormValue = {
-  name: string;
-  typeCategoryRaw: 'IN' | 'OUT';
-  details: string;
-  isActive: boolean;
-  reference: string;
-};
 
 @Component({
   selector: 'app-category-form',

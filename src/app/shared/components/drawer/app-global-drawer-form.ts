@@ -21,8 +21,9 @@ export class GlobalDrawerFormComponent {
   @Input() title!: string;
   @Input() fields!: FieldDefinition[];
   @Input() submitLabel = 'Enregistrer';
-  @Input() addLink? = '/';
-  @Input() editLink? = '/';
+  @Input() addLink?: string = '/';
+  @Input() editLink?: string = '/';
+  @Input() viewLink?: string = '/';
   @Input() editMode = false;
   @Input() itemId?: string;
   @Input() key = 0;

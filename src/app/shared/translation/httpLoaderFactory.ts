@@ -3,6 +3,7 @@ import { MultiTranslateHttpLoader } from './MultiTranslateHttpLoader';
 
 //todo get from API
 const TRANSLATION_FILES = [
+  'setting',
   'general',
   'nav',
   'notification',

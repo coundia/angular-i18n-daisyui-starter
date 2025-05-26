@@ -5,7 +5,7 @@ import { NavbarGuestComponent } from './navbar-guest/navbar-guest.component';
 import { AuthService } from '../security/services/auth.service';
 import { ThemeToggleComponent } from '../themes/theme-toggle.component';
 import { SHARED_IMPORTS } from '../constantes/shared-imports';
-import {SidePanelComponent} from './side-panel/side-panel.component';
+import {SidePanelComponent} from '../side-panel/side-panel.component';
 
 @Component({
   selector: 'app-navbar',

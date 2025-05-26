@@ -1,0 +1,6 @@
+<a [routerLink]="link" (click)="onClick()" class="btn btn-sm btn-ghost w-full justify-start flex items-center gap-2">
+  <svg *ngIf="icon" class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path [attr.d]="icon" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  {{ label }}
+</a>

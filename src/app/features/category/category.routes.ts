@@ -20,4 +20,10 @@ export const categoryRoutes: Routes = [
     loadComponent: () =>
       import('./components/category-form.component').then(m => m.CategoryFormComponent),
   },
+  {
+    path: 'category/:id/view',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./components/category-view.component').then(m => m.CategoryViewComponent),
+  },
 ];

@@ -7,10 +7,12 @@ import { ResetPasswordComponent } from './shared/security/reset-password/reset-p
 import { authGuard } from './shared/security/guard/auth.guard';
 import { userProfileRoutes } from './user-profile/user.routes';
 import { categoryRoutes } from './features/category/category.routes';
+import {settingRoutes} from './features/Setting/setting.routes';
 
 export const routes: Routes = [
   ...categoryRoutes,
   ...userProfileRoutes,
+  ...settingRoutes,
 
   { path: '', component: HomeComponent },
   { path: 'security/login', component: LoginComponent },
